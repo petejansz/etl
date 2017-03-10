@@ -1,0 +1,66 @@
+ORACLE_ETL_SCRIPT() {
+if [ -z "$3" ]
+  then
+    threshold=3
+  else
+	threshold=$3
+fi
+  echo exit | sqlplus "$Oracle_CS" @"$1" >> $LogFile
+  RC=$?; CHECK_FOR_ERROR $threshold $1
+  ### sed -i 's/ *'$(echo -e \\v)' */'$(echo -e \\v)'/g' $2 ###
+  produce_file -sql_filename $1 -del_filename $2
+  RC=$?; CHECK_FOR_ERROR 0 "Formatting $2"
+}
+
+produce_file script -del_filename <del_filename>
+  def main():
+    if (del_filename exists):
+      format_file(del_filename)
+      
+  def format_file( del_filename )
+    # Get map of format_specs
+    format_map = make_format_map(del_filename)
+    formatted_ouput = format(del_filename)
+    write_file(del_filename, formatted_ouput)
+    
+  def format(del_filename) : string
+    formatted_output = ''
+    
+    foreach row in open(del_filename).readlines():
+      data_items = row.split(DELIMITER)
+
+      foreach col_nr in data_items.length:
+        format_map_key = "c%s" % col_nr
+        format_spec = format_map[format_map_key]
+        
+        format_str = ''
+        
+        if format_spec == None:
+          format_str += "%s" + DELIMITER
+        else:
+          format_str += format_spec + DELIMITER #, e.g.,  "%4s"
+        
+      formatted_row = format_str % tuple( data_items )
+      
+      formatted_output += formatted_row
+    
+  return formatted_output
+    
+def make_format_map(del_filename):
+  format_filename = del_filename + ".format"
+  # Map <column-nr>=<format_spec> into map
+  map = (format_filename)
+  
+  return map
+  
+  
+del_filename.format
+    <column-nr>=<format_spec>
+    <column-nr>=<format_spec>
+    <column-nr>=<format_spec>
+
+RD_EMPLOYEE.format
+example
+      c4 = %4s
+      c7 = %12s
+  
